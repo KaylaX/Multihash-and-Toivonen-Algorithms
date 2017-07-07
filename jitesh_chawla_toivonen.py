@@ -1,7 +1,6 @@
 import itertools
 import random
 import sys
-# sys.setdefaultencoding('utf-8')
 
 output_file = open("jitesh_chawla_toivonen.txt",'w')
 neg_border_list = list()
@@ -22,6 +21,8 @@ basketAfterSampling = list()
 subset_length = 1;           # length of the tuple of frequent itemsets.
 freq_item_sets = list(); extended_freq_itemsets = list()  # contains set of all frequent itemsets.
 
+
+# Defining the negative checker.
 def neg_checker(candidate_freq_itemsets,items_freq,freq_itemsets_earlier):
 
     for key, value in candidate_freq_itemsets.items():
@@ -40,6 +41,7 @@ def neg_checker(candidate_freq_itemsets,items_freq,freq_itemsets_earlier):
                     neg_border_list.append(key)
     return items_freq
 
+# Creating Frequent Itemsets.
 def createfreq_items_sets(baskets_before_sampling, subset_length, freq_itemsets_earlier):
     candidate_freq_itemsets = {}
     items_freq = list()
@@ -52,20 +54,22 @@ def createfreq_items_sets(baskets_before_sampling, subset_length, freq_itemsets_
     items_freq=neg_checker(candidate_freq_itemsets,items_freq,freq_itemsets_earlier)
     return sorted(items_freq)
 
+# Generating Random samples
 def generate_random_sample(prob,c):#Return a k length list of unique elements chosen from the population sequence or set
     func_val1 = random.sample(range(c), int(prob * c))
     return func_val1
 
+#  Calculating new Support
 def get_newsupport_value(prob,s):#Calculates the new support
     func_val2 = int(0.9*prob*s)
     return func_val2
 
+# Genearting Itemsets
 def generateitemsets(lists,k):
     lst=[list(x) for x in itertools.combinations(lists, k)]
     return lst
 
-
-
+# Checking Negative borders.
 def checkNegative(baskets_before_sampling,neg_border_list):
     negative_border_dict={}
     for basket in baskets_before_sampling:
@@ -76,7 +80,7 @@ def checkNegative(baskets_before_sampling,neg_border_list):
     # print(negative_border_dict)
     return negative_border_dict
 
-
+# Counting frequent Itemsets
 def count_freq_itemsets(baskets_before_sampling,extended_freq_itemsets):
     for basket in baskets_before_sampling:
         for item1 in extended_freq_itemsets:
@@ -87,6 +91,7 @@ def count_freq_itemsets(baskets_before_sampling,extended_freq_itemsets):
     # print(count_freq_itemsets_dict)
     return count_freq_itemsets_dict
 
+# Function to display the result.
 def display(iterationcount,probability,list_print):
     print(iterationcount)
     print(probability)
@@ -114,6 +119,8 @@ for ran_ind in random_indexes:
     basketAfterSampling.append(baskets_before_sampling[ran_ind])
 flag = True
 iterationcount = 1      # number of iterations required for the successful run
+
+# Performing the iterations until we do not have any other new frequent itemsets.
 while flag:
     flag = False
 
